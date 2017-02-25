@@ -3,11 +3,11 @@
 1. Download [XAMPP](https://www.apachefriends.org/index.html)
 2. Move entire "SRCWebsite" folder under "xampp/htdocs" 
 3. Open XAMPP Control Panel and start Apache server
-4. Open your browser and go to http://localhost/SRCWebsite/
+4. Open your browser and go to [http://localhost/SRCWebsite](http://localhost/SRCWebsite)
 
 ## Development
 * Create a new branch to work on features
-* The default http://localhost/SRCWebsite/ uses Bootstrap 2, http://localhost/SRCWebsite/index-bs3.html uses Bootstrap 3
+* The default [http://localhost/SRCWebsite](http://localhost/SRCWebsite) uses Bootstrap 2, [http://localhost/SRCWebsite/index-bs3.html](http://localhost/SRCWebsite/index-bs3.html) uses Bootstrap 3
 * [api/dbinfo.inc](https://github.com/johnnyprc/SRCWebsite/blob/master/api/dbinfo.inc) has database information, username and password are in the Google Drive 
 * Use tabs...
 
