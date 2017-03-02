@@ -16,15 +16,22 @@
 		
 		$database = mysqli_select_db($connection, DB_DATABASE);
 
-		$sql = "SELECT ID FROM Userinfo WHERE username = '$myusername' and password = '$mypassword'";
+		/* Querying database for user info */
+		$sql = "SELECT isAdmin FROM Userinfo WHERE username = '$myusername' and password = '$mypassword'";
 		$result = mysqli_query($connection, $sql);
 		if (!$result) ChromePhp::error("Error description: " . mysqli_error($connection));
 
 		/* Username and password matched */
 		if (mysqli_num_rows($result) == 1) {
+			$isAdmin = mysqli_fetch_row($result)[0];
 			$_SESSION['username'] = $myusername;
+			$_SESSION['isAdmin'] = $isAdmin;
 			$_SESSION['err'] = "";
-			header('Location: admin.php');
+			if ($isAdmin) {
+				header('Location: admin.php');
+			} else {
+				header('Location: submitEvent.php');
+			}
 		} else {
 			$_SESSION['err'] = "Username and password is not valid";
 			header('Location: login.php');
@@ -32,8 +39,6 @@
 
 		mysqli_close($connection);
 	}
-
-	// session_unset();
 ?>
 	<html>
 	<head>
