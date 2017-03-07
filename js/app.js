@@ -12,7 +12,7 @@
 	    ((''+day).length < 2 ? '0' : '') + day;
 
 	var options = {
-		events_source: 'eventsTest.json.php',
+		events_source: 'api/eventsTest.json.php',
 		view: 'week',
 		tmpl_path: 'tmpls/',
 		tmpl_cache: false,
