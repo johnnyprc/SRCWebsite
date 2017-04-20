@@ -1,0 +1,55 @@
+#calendar-container {
+    width: 800px;
+    height: 900px;
+    margin-top: 8%;
+    margin-right: 3%; 
+    float: right;
+}
+
+.active {
+    background-color: #BF9F5F !important;
+}
+
+#prevBtn, #nextBtn {
+    padding: 0px 10px;
+    border: none;       /* remove border for button */
+    background: none;
+}
+
+button.glyphicon-arrow-left, 
+button.glyphicon-arrow-right {
+    font-size: 2em;
+}
+
+.calendar-heading {
+    text-align: center;
+}
+
+#monthTitle {
+    font-size: 32px;
+}
+
+#calendar {
+    margin: 0 auto;     /* center table horizontally */
+}
+
+#calendar th {
+    color: #3D9B45;
+    font-weight: 800;
+    text-align: center;
+}
+
+#calendar td {
+    width: 105px;
+    height: 105px;
+    vertical-align: top;
+    background-color: #E1D1B3;
+    border: 8px solid white;    /* white border for the gap between cells */
+}
+
+#calendar td .date {
+    color: #3D9B45;
+    font-weight: 800;
+    float: right;
+    margin-right: 2px;
+}
