@@ -1,7 +1,11 @@
+#calendar-display-list {
+    
+}
+
 #calendar-container {
     width: 800px;
-    height: 900px;
-    margin-top: 8%;
+    /*height: 900px;*/
+    /*margin-top: 8%;*/
     margin-right: 3%; 
     float: right;
 }
