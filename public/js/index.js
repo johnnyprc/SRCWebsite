@@ -23,6 +23,22 @@ $(document).ready(function() {
         setTitleData(newMonth, newYear);
     });
 
+    $('#prevBtn').click(function() {
+        // remove table rows except for the column names in order
+        // to add new table rows
+        $('table#calendar tr').not(':first').remove();
+
+        // month wraps around when reaches 1 and sets back a year; create 
+        // first day of the new month as the date to create calendar from
+        var month = $('#monthTitle').data('month');
+        var year = $('#monthTitle').data('year')
+        var newMonth = month == 0 ? 11 : month - 1;
+        var newYear = month == 0 ? year - 1 : year;
+        var newDate = new Date(monthNames[newMonth] + " 1, " + newYear);
+        constructCalendar(newDate);
+        setTitleData(newMonth, newYear);
+    });
+
     // set title to current month and data attributes to current month and year
     function setTitleData(month, year) {
         $('#monthTitle').text(monthNames[month]);
