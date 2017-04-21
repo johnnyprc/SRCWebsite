@@ -1,13 +1,9 @@
 <% include partials/header %>
-
-<div id="calendar-display-list">
-    <p id="testTxt"></p>
-</div>
-
 <div id="calendar-container">
     <div class="calendar-heading">
+        <p id="year"></p>
         <button class="glyphicon glyphicon-arrow-left" id="prevBtn"></button>
-        <span id="monthTitle">March</span>
+        <span id="monthTitle" data-month="" data-year=""></span>
         <button class="glyphicon glyphicon-arrow-right" id="nextBtn"></button>
     </div>
     <table id="calendar">
@@ -20,52 +16,6 @@
             <th>F</th>
             <th>Sa</th>
         </tr>
-        <tr>
-            <td><span class="date">1</span></td>
-            <td><span class="date">2</span></td>
-            <td><span class="date">3</span></td>
-            <td><span class="date">4</span></td>
-            <td><span class="date">5</span></td>
-            <td><span class="date">6</span></td>
-            <td><span class="date">7</span></td>
-        </tr>
-        <tr>
-            <td class="active"><span class="date">1</span></td>
-            <td class="active"><span class="date">1</span></td>
-            <td class="active"><span class="date">1</span></td>
-            <td class="active"><span class="date">1</span></td>
-            <td class="active"><span class="date">1</span></td>
-            <td class="active"><span class="date">1</span></td>
-            <td class="active"><span class="date">1</span></td>
-        </tr>
-        <tr>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-        </tr>
-        <tr>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-        </tr>
-        <tr>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-            <td><span class="date">1</span></td>
-        </tr>
     </table>
-
 </div>
 <% include partials/footer %>
