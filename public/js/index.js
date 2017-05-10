@@ -13,7 +13,7 @@ $(document).ready(function() {
     var dateIndex = 3;          // index of event date in the spreadsheet
     var timeIndex = 4;          // index of event time in the spreadsheet
     var locationIndex = 5;      // index of event location in the spreadsheet
-    var titleLength = 6;        // length of title to display at calendar
+    var titleLength = 4;        // length of title to display at calendar
 
     // default calendar to current date
     var d = new Date();
@@ -91,6 +91,10 @@ $(document).ready(function() {
             $(this).closest('tr').children('td').addClass('active');
         });
 
+        // first row of will have popover at the bottom and the rest at top
+        $('#calendar tr:eq(1) td').attr("data-placement", "bottom");
+        $('#calendar tr:not(:eq(1)) td').attr("data-placement", "top");
+
         // iterate through all table cells and display event titles
         $("#calendar td").each(function() {
             var currentCell = $(this);
@@ -108,9 +112,12 @@ $(document).ready(function() {
 
             // display event titles on days with events and build popover content
             if (events.hasOwnProperty(date)) {
+                $('ul', currentCell).append('<br>');
                 events[date].forEach(function(item) {
-                    $('ul', currentCell).append('<li>' +
+                    var formattedTime = item[timeIndex].replace(":00", "");
+                    $('ul', currentCell).append('<li>' + formattedTime + " " +
                         item[titleIndex].substr(0, titleLength) + '...</li>');
+
                     var data = {
                         title: item[titleIndex],
                         time: item[timeIndex],
@@ -123,6 +130,7 @@ $(document).ready(function() {
                 popoverContent = "No Events found"
             }
 
+            // format date to: Month Day Year
             var d = new Date(date);
             var popoverTitle = "<b>" + d.toDateString().substr(4) + "</b>";
 
@@ -132,7 +140,6 @@ $(document).ready(function() {
                 title: popoverTitle,
                 content: popoverContent,
                 container: "body",
-                placement:"bottom",
                 trigger:"hover"
             });
         });
