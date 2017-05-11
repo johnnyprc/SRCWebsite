@@ -23,7 +23,12 @@ $(document).ready(function() {
     constructCalendar(d);
 
     $("#orgNameIndex").html(events["5/1/2017"][1][orgNameIndex]);
-
+    $("#titleIndex").html(events["5/1/2017"][1][titleIndex]);
+    $("#dateIndex").html(events["5/1/2017"][1][dateIndex]);   
+    $("#timeIndex").html(events["5/1/2017"][1][timeIndex]);
+    $("#locationIndex").html(events["5/1/2017"][1][locationIndex]);
+    $("#titleLength").html(events["5/1/2017"][6][titleLength]);   
+ 
     $('#nextBtn').click(function() {
         // remove table rows except for the column names in order
         // to add new table rows
