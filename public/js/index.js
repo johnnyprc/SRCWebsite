@@ -9,6 +9,7 @@ $(document).ready(function() {
     var events = {};            // {[date => event1, event2...],
                                 //  [date2 => event...]}
     var orgNameIndex = 1;       // index of organization name in the spreadsheet
+ 
     var titleIndex = 2;         // index of event title in the spreadsheet
     var dateIndex = 3;          // index of event date in the spreadsheet
     var timeIndex = 4;          // index of event time in the spreadsheet
@@ -20,6 +21,8 @@ $(document).ready(function() {
     processData()
     setTitleData(d.getMonth(), d.getFullYear())
     constructCalendar(d);
+
+    $("#orgNameIndex").html(events["5/1/2017"][1][orgNameIndex]);
 
     $('#nextBtn').click(function() {
         // remove table rows except for the column names in order
