@@ -78,5 +78,14 @@ button.glyphicon-arrow-right {
 
 #eInfo{
   float: left;
+  width: 650px;
 
+}
+
+.divider {
+    border: none;
+    height: 2px;
+    /* Set the hr color */
+    color: #E1D1B3; /* old IE */
+    background-color: #E1D1B3; /* Modern Browsers */
 }
