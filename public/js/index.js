@@ -14,6 +14,8 @@ $(document).ready(function() {
     var dateIndex = 3;          // index of event date in the spreadsheet
     var timeIndex = 4;          // index of event time in the spreadsheet
     var locationIndex = 5;      // index of event location in the spreadsheet
+    var descriptionIndex = 6;   // index of event description in the spreadsheet
+    var linkIndex = 7;          // index of event link in the spreadsheet
     var titleLength = 4;        // length of title to display at calendar
 
     // default calendar to current date
@@ -21,13 +23,6 @@ $(document).ready(function() {
     processData()
     setTitleData(d.getMonth(), d.getFullYear())
     constructCalendar(d);
-
-    $("#orgNameIndex").html(events["5/1/2017"][1][orgNameIndex]);
-    $("#titleIndex").html(events["5/1/2017"][1][titleIndex]);
-    $("#dateIndex").html(events["5/1/2017"][1][dateIndex]);   
-    $("#timeIndex").html(events["5/1/2017"][1][timeIndex]);
-    $("#locationIndex").html(events["5/1/2017"][1][locationIndex]);
-    $("#titleLength").html(events["5/1/2017"][6][titleLength]);   
  
     $('#nextBtn').click(function() {
         // remove table rows except for the column names in order
@@ -84,19 +79,30 @@ $(document).ready(function() {
     }
 
     function displayEvents() {
-        // template for the popover content
-        var template = 
-            `<h4>{{title}}</h4>
-             <h6>{{time}} @ {{location}}</h6>
-             <h6>Hosted by: {{orgName}}</h6>
-             <hr>`;
-
         // create a border and change color when a row is selected
         $('#calendar td').click(function() {
             $('#calendar td').removeClass('active');
             $('#calendar tr').css('outline', '');
             $(this).closest('tr').css('outline', 'thin solid');
             $(this).closest('tr').children('td').addClass('active');
+
+            // get all dates in current row and display detailed events info
+            var datesInRow = [];
+            var curMonth = $('#monthTitle').data('month') + 1;
+            var curYear = $('#monthTitle').data('year');
+
+            $(this).closest('tr').children('td').each(function() {
+                var day = $('span', $(this)).text();
+                if (day != "") {
+                    // construct date formatted as MM/DD/YEAR
+                    date = curMonth + '/' + day + '/' + curYear;
+                    datesInRow.push(date);
+                }
+            });
+
+            // empty everything before displaying event details
+            $('#eInfo').empty()
+            displayEventsDetails(datesInRow);
         });
 
         // first row of will have popover at the bottom and the rest at top
@@ -105,53 +111,105 @@ $(document).ready(function() {
 
         // iterate through all table cells and display event titles
         $("#calendar td").each(function() {
-            var currentCell = $(this);
-            var popoverContent = "";
-
-            // skip all blank table cells
-            var day = $('span', currentCell).text();
-            if (day == "") {
-                return;
-            }
-
-            // construct date formatted as MM/DD/YEAR
-            date = ($('#monthTitle').data('month') + 1) + '/' + day + '/' +
-                $('#monthTitle').data('year');
-
-            // display event titles on days with events and build popover content
-            if (events.hasOwnProperty(date)) {
-                $('ul', currentCell).append('<br>');
-                events[date].forEach(function(item) {
-                    var formattedTime = item[timeIndex].replace(":00", "");
-                    $('ul', currentCell).append('<li>' + formattedTime + " " +
-                        item[titleIndex].substr(0, titleLength) + '...</li>');
-
-                    var data = {
-                        title: item[titleIndex],
-                        time: item[timeIndex],
-                        location: item[locationIndex],
-                        orgName: item[orgNameIndex]
-                    };
-                    popoverContent += Mustache.render(template, data);
-                });
-            } else {
-                popoverContent = "No Events found"
-            }
-
-            // format date to: Month Day Year
-            var d = new Date(date);
-            var popoverTitle = "<b>" + d.toDateString().substr(4) + "</b>";
-
-            // set popover when hovering
-            currentCell.popover({
-                html: "true",
-                title: popoverTitle,
-                content: popoverContent,
-                container: "body",
-                trigger:"hover"
-            });
+            displayEventsInTable($(this));
         });
+    }
 
+    // display events with details on the left
+    function displayEventsDetails(datesInRow) {
+        // template for leaf image and date
+        var heading =
+            `<img src="img/leaf.png" alt="leaf" height="50" width="50">
+             <span class="currentDay"><b>{{date}}</b></span>`;
+        // template for event details
+        var eventInfo =
+           `<hr class="divider">
+            <div class="events">
+                <a class="eventLink" href="{{link}}">Learn more about {{name}}</a>
+                <span class="eventTitle">{{title}}</span>
+                <span class="orgName">Hosted by: {{name}}</span>
+                <b><p class="eventDate">When: {{date}}</p></b>
+                <b><p class="eventLoc">Where: {{location}}</p></b>
+                <p class="description"><b>Why:</b> {{description}}</p>
+            </div>`;
+
+        datesInRow.forEach(function(date) {
+            if (events.hasOwnProperty(date)) {
+                // formate date into MM/DD and display heading
+                var data = {date: date.substring(0, date.lastIndexOf("/"))};
+                $('#eInfo').append(Mustache.render(heading, data));
+
+                // display event details for each event
+                events[date].forEach(function(item) {
+                    var d = new Date(date);
+                    var event_data = {
+                        link: item[linkIndex],
+                        title: item[titleIndex],
+                        name: item[orgNameIndex],
+                        date: d.toDateString(),
+                        location: item[locationIndex],
+                        description: item[descriptionIndex]
+                    };
+
+                    $('#eInfo').append(Mustache.render(eventInfo, event_data));
+                });
+            }
+        });
+    }
+
+    // display events in table cells and popovers
+    function displayEventsInTable(currentCell) {
+        // template for the popover content
+        var template =
+            `<h4>{{title}}</h4>
+             <h6>{{time}} @ {{location}}</h6>
+             <h6>Hosted by: {{orgName}}</h6>
+             <hr>`;
+        var popoverContent = "";
+
+
+        // skip all blank table cells
+        var day = $('span', currentCell).text();
+        if (day == "") {
+            return;
+        }
+
+        // construct date formatted as MM/DD/YEAR
+        date = ($('#monthTitle').data('month') + 1) + '/' + day + '/' +
+            $('#monthTitle').data('year');
+
+        // display event titles on days with events and build popover content
+        if (events.hasOwnProperty(date)) {
+            $('ul', currentCell).append('<br>');
+            events[date].forEach(function(item) {
+                var formattedTime = item[timeIndex].replace(":00", "");
+                $('ul', currentCell).append('<li>' + formattedTime + " " +
+                    item[titleIndex].substr(0, titleLength) + '...</li>');
+
+                var data = {
+                    title: item[titleIndex],
+                    time: item[timeIndex],
+                    location: item[locationIndex],
+                    orgName: item[orgNameIndex]
+                };
+                popoverContent += Mustache.render(template, data);
+            });
+        } else {
+            popoverContent = "No Events found"
+        }
+
+        // format date to: Month Day Year
+        var d = new Date(date);
+        var popoverTitle = "<b>" + d.toDateString().substr(4) + "</b>";
+
+        // set popover when hovering
+        currentCell.popover({
+            html: "true",
+            title: popoverTitle,
+            content: popoverContent,
+            container: "body",
+            trigger:"hover"
+        });
     }
 
     // set title to current month and data attributes to current month and year
