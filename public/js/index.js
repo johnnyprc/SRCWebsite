@@ -23,6 +23,7 @@ $(document).ready(function() {
     processData()
     setTitleData(d.getMonth(), d.getFullYear())
     constructCalendar(d);
+    defaultDisplay();
  
     $('#nextBtn').click(function() {
         // remove table rows except for the column names in order
@@ -78,19 +79,37 @@ $(document).ready(function() {
         });
     }
 
+    function defaultDisplay() {
+        var cur = new Date();
+        var curMonth = $('#monthTitle').data('month') + 1;
+        var curYear = $('#monthTitle').data('year');
+
+        // highlight row of current week and display current week event details
+        var first = cur.getDate() - cur.getDay();
+        var last = first + 7;
+        var curWeek = []
+        var curRow = $("span:contains('" + first + "')").parent().closest('tr');
+        highlightTableRow(curRow);
+
+        while (first < last) {
+            curWeek.push(curMonth + '/' + first + '/' + curYear);
+            first++;
+        }
+        displayEventsDetails(curWeek);
+    }
+
     function displayEvents() {
+        var curMonth = $('#monthTitle').data('month') + 1;
+        var curYear = $('#monthTitle').data('year');
+
         // create a border and change color when a row is selected
         $('#calendar td').click(function() {
             $('#calendar td').removeClass('active');
             $('#calendar tr').css('outline', '');
-            $(this).closest('tr').css('outline', 'thin solid');
-            $(this).closest('tr').children('td').addClass('active');
+            highlightTableRow($(this).closest('tr'));
 
             // get all dates in current row and display detailed events info
             var datesInRow = [];
-            var curMonth = $('#monthTitle').data('month') + 1;
-            var curYear = $('#monthTitle').data('year');
-
             $(this).closest('tr').children('td').each(function() {
                 var day = $('span', $(this)).text();
                 if (day != "") {
@@ -102,7 +121,9 @@ $(document).ready(function() {
 
             // empty everything before displaying event details
             $('#eInfo').empty()
+            $('#eInfo').hide();
             displayEventsDetails(datesInRow);
+            $('#eInfo').fadeIn('slow');
         });
 
         // first row of will have popover at the bottom and the rest at top
@@ -117,6 +138,15 @@ $(document).ready(function() {
 
     // display events with details on the left
     function displayEventsDetails(datesInRow) {
+        var filteredArr = datesInRow.filter(function(date) {
+            return events.hasOwnProperty(date);
+        });
+
+        if (filteredArr.length == 0) {
+            $('#eInfo').append("<p id='errorMsg'>No events for this week!</p>");
+            return;
+        }
+
         // template for leaf image and date
         var heading =
             `<img src="img/leaf.png" alt="leaf" height="50" width="50">
@@ -133,27 +163,25 @@ $(document).ready(function() {
                 <p class="description"><b>Why:</b> {{description}}</p>
             </div>`;
 
-        datesInRow.forEach(function(date) {
-            if (events.hasOwnProperty(date)) {
-                // formate date into MM/DD and display heading
-                var data = {date: date.substring(0, date.lastIndexOf("/"))};
-                $('#eInfo').append(Mustache.render(heading, data));
+        filteredArr.forEach(function(date) {
+            // formate date into MM/DD and display heading
+            var data = {date: date.substring(0, date.lastIndexOf("/"))};
+            $('#eInfo').append(Mustache.render(heading, data));
 
-                // display event details for each event
-                events[date].forEach(function(item) {
-                    var d = new Date(date);
-                    var event_data = {
-                        link: item[linkIndex],
-                        title: item[titleIndex],
-                        name: item[orgNameIndex],
-                        date: d.toDateString(),
-                        location: item[locationIndex],
-                        description: item[descriptionIndex]
-                    };
+            // display event details for each event
+            events[date].forEach(function(item) {
+                var d = new Date(date);
+                var event_data = {
+                    link: item[linkIndex],
+                    title: item[titleIndex],
+                    name: item[orgNameIndex],
+                    date: d.toDateString(),
+                    location: item[locationIndex],
+                    description: item[descriptionIndex]
+                };
 
-                    $('#eInfo').append(Mustache.render(eventInfo, event_data));
-                });
-            }
+                $('#eInfo').append(Mustache.render(eventInfo, event_data));
+            });
         });
     }
 
@@ -210,6 +238,13 @@ $(document).ready(function() {
             container: "body",
             trigger:"hover"
         });
+    }
+
+    // highlight table row by adding a black outline and changing background
+    // color of its table cells
+    function highlightTableRow(row) {
+        row.css('outline', 'thin solid');
+        row.children('td').addClass('active');
     }
 
     // set title to current month and data attributes to current month and year

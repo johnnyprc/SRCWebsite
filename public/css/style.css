@@ -9,7 +9,7 @@
 }
 
 #calendar-container {
-    width: 800px;
+    width: 700px;
     /*height: 900px;*/
     margin-top: 50px;
     margin-right: 3%; 
@@ -90,7 +90,7 @@ button.glyphicon-arrow-right {
 #eInfo{
     position: relative;
     float: left;
-    width: 45%;
+    width: 40%;
     margin-left: 4%;
     margin-top: 50px;
 }
@@ -144,4 +144,10 @@ button.glyphicon-arrow-right {
 
 .orgName, .eventDate, .eventLoc, .description, .eventLink {
     font-size: 12px;
+}
+
+#errorMsg {
+    margin-top: 40%;
+    margin-left: 30%;
+    font-size: 20px;
 }
