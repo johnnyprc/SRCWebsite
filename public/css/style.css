@@ -21,9 +21,20 @@
 }
 
 #prevBtn, #nextBtn {
-    padding: 0px 15px;
-    border: none;       /* remove border for button */
+    margin-top: 6px;
+    border: none;        /*remove border for button*/
     background: none;
+    outline: none;
+}
+
+#prevBtn {
+    margin-left: 220px;
+    float: left;
+}
+
+#nextBtn {
+    margin-right: 220px;
+    float: right;
 }
 
 button.glyphicon-arrow-left, 
@@ -110,6 +121,7 @@ button.glyphicon-arrow-right {
 .divider {
     border: none;
     height: 2px;
+    clear: right;
     margin-top: 0px;
     margin-bottom: 10px;
     /* Set the hr color */
@@ -133,13 +145,12 @@ button.glyphicon-arrow-right {
 .description {
     padding-left: 50px;
     text-indent: -50px;
+    margin-bottom: -5px;
     width: 500px;
 }
 
 .eventLink {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
+    float: right;
 }
 
 .orgName, .eventDate, .eventLoc, .description, .eventLink {

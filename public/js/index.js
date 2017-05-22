@@ -155,12 +155,12 @@ $(document).ready(function() {
         var eventInfo =
            `<hr class="divider">
             <div class="events">
-                <a class="eventLink" href="{{link}}">Learn more about {{name}}</a>
                 <span class="eventTitle">{{title}}</span>
                 <span class="orgName">Hosted by: {{name}}</span>
                 <b><p class="eventDate">When: {{date}}</p></b>
                 <b><p class="eventLoc">Where: {{location}}</p></b>
                 <p class="description"><b>Why:</b> {{description}}</p>
+                <a class="eventLink" href="{{link}}">Learn more about {{name}}</a>
             </div>`;
 
         filteredArr.forEach(function(date) {
@@ -194,7 +194,6 @@ $(document).ready(function() {
              <h6>Hosted by: {{orgName}}</h6>
              <hr>`;
         var popoverContent = "";
-
 
         // skip all blank table cells
         var day = $('span', currentCell).text();
